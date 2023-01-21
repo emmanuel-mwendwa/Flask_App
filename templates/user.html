@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %} User Page {% endblock %}
+
+{% block content %}
+
+    {% if name %}
+        <p>Hello, {{ name }}!</p>
+    {% else %}
+        <p>Hello, Stranger!</p>
+    {% endif %}
+
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.name.label }} {{ form.name() }}
+        {{ form.submit() }}
+    </form>
+
+    {% if not known %}
+        <p>Pleased to meet you!</p>
+    {% else %}
+        <p>Happy to see you again!</p>
+    {% endif %}
+
+{% endblock %}
