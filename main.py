@@ -3,6 +3,8 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_mail import Mail, Message
 import os
 
 # absolute path for the database file
@@ -15,7 +17,27 @@ app.config["SECRET_KEY"] = "hard to guess string"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# mail sending configuration
+app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
+app.config['FLASKY_MAIL_SENDER'] = 'Flasky admin <noreply@demo.com>'
+app.config['FLASKY_ADMIN'] = os.environ.get('FLASKY_ADMIN')
+
+# Flask-Mail configuration for Gmail
+app.config["MAIL_SERVER"] = "smtp.googlemail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_USERNAME"] = os.environ.get('MAIL_USERNAME')
+app.config["MAIL_PASSWORD"] = os.environ.get('MAIL_PASSWORD')
+
 db = SQLAlchemy(app)
+
+# initializing migration script
+migrate = Migrate(app, db)
+
+# initializing flask-mail
+mail = Mail(app)
+
 
 # a FlaskForm model/class that helps create a HTML template form
 class NameForm(FlaskForm):
@@ -47,6 +69,15 @@ class User(db.Model):
         return '<User %r>' % self.username
 
 
+# function that avoids having to create email messages manually every time
+def send_email(to, subject, template, **kwargs):
+    msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject,
+                    sender=app.config['FLASKY_MAIL_SENDER'], recipients=[to])
+    msg.body = render_template(template + '.txt', **kwargs)
+    msg.html = render_template(template + '.html', **kwargs)
+    mail.send(msg)
+
+
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -65,6 +96,10 @@ def user():
             db.session.add(user)
             db.session.commit()
             session["known"] = False
+            # send email to app admin once any new names are added to the database
+            if app.config['FLASKY_ADMIN']:
+                send_email(app.config['FLASKY_ADMIN'], 'New User', 'mail/new_user', user=user)
+                print("Email sent")
         else:
             session["known"] = True
         session["name"] = form.name.data
