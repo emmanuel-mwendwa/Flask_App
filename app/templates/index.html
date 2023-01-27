@@ -6,5 +6,7 @@
 
     <h1>Hello, World!</h1>
     <p>Welcome to my app.</p>
+    <p>The time locally is, {{ moment(current_time).format('LLL') }}</p>
+    <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
 
 {% endblock %}
