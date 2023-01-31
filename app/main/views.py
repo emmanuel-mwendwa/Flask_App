@@ -4,8 +4,8 @@ from . import main
 from .forms import NameForm
 from .. import db
 from ..models import User
-
-
+from flask import current_app
+from app.email import send_email
 @main.route('/')
 def index():
     return render_template("index.html", current_time=datetime.utcnow())
@@ -25,8 +25,8 @@ def user():
             db.session.commit()
             session["known"] = False
             # send email to app admin once any new names are added to the database
-            if app.config['FLASKY_ADMIN']:
-                send_email(app.config['FLASKY_ADMIN'], 'New User', 'mail/new_user', user=user)
+            if current_app.config['FLASKY_ADMIN']:
+                send_email(current_app.config['FLASKY_ADMIN'], 'New User', 'mail/new_user', user=user)
                 print("Email sent")
         else:
             session["known"] = True
