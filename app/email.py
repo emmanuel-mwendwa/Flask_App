@@ -13,6 +13,7 @@ def send_async_email(app, msg):
 
 # function that avoids having to create email messages manually every time
 def send_email(to, subject, template, **kwargs):
+    
     app = current_app._get_current_object()
 
     msg = Message(app.config['FLASKY_MAIL_SUBJECT_PREFIX'] + subject,
