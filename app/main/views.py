@@ -6,6 +6,7 @@ from .. import db
 from ..models import User
 from flask import current_app
 from app.email import send_email
+
 @main.route('/')
 def index():
     return render_template("index.html", current_time=datetime.utcnow())
