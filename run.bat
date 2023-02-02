@@ -6,3 +6,8 @@ set SECRET_KEY=this is my secret key
 set MAIL_USERNAME=unit.test.26@gmail.com
 set MAIL_PASSWORD=zrccjewjsmcdxipx
 set FLASKY_ADMIN=unit.test.26@gmail.com
+
+flask db migrate -m "another migration"
+flask db upgrade
+
+flask run

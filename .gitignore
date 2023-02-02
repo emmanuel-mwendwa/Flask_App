@@ -1,3 +1,7 @@
 /env
 __pycache__
-*.sqlite
+# ignore the database
+/db/*.sqlite3
+# ignore .bat file
+*.bat
+*.bak

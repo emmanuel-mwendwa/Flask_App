@@ -1,5 +1,7 @@
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from . import login_manager
 
 # database models in python code that will help in creating database tables with the defined columns and their attributes
 class Role(db.Model):
@@ -13,10 +15,11 @@ class Role(db.Model):
         return '<Role %r>' % self.name
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(78), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     # a column formed from the relationship
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
@@ -38,3 +41,9 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+# function to load a user from the database
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
