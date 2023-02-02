@@ -23,9 +23,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, index=True)
     # a column formed from the relationship
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-
-    # password property
-    password = db.Column(db.String(128))
+     # password property
+    password_hash = db.Column(db.String(128))
 
     @property
     def password(self):
