@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    {% if name %}
+    <!-- {% if name %}
         <p>Hello, {{ name }}!</p>
     {% else %}
         <p>Hello, Stranger!</p>
@@ -20,6 +20,13 @@
         <p>Pleased to meet you!</p>
     {% else %}
         <p>Happy to see you again!</p>
-    {% endif %}
+    {% endif %}  -->
+
+    Hello,
+    {% if current_user.is_authenticated %}
+        {{ current_user.username }}
+    {% else %}
+        Stranger
+    {% endif %}!
 
 {% endblock %}

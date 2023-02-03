@@ -5,11 +5,17 @@
 {% block content %}
 
 <h1>Login</h1>
+<p>
+  New User?
+  <a href="{{ url_for('auth.register') }}">
+    Click here to register
+  </a>
+</p>
 <hr />
-<form action="">
+<form action="" method="POST">
   {{ form.hidden_tag() }} 
-  {{ form.email.label }} {{ form.email() }} <br />
-  {{ form.password.label }} {{ form.password() }} <br />
+  {{ form.email.label }} <br> {{ form.email() }} <br />
+  {{ form.password.label }} <br> {{ form.password() }} <br />
   {{ form.remember_me() }} {{ form.remember_me.label }} <br />
   {{ form.submit() }}
 </form>
