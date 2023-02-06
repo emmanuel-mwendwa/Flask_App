@@ -6,30 +6,6 @@
 
 {% block content %}
 
-    {% if name %}
-        <p>Hello, {{ name }}!</p>
-    {% else %}
-        <p>Hello, Stranger!</p>
-    {% endif %}
-
-    <form action="" method="POST">
-        <!-- {{ form.hidden_tag() }}
-        {{ form.name.label }} {{ form.name() }}
-        {{ form.submit() }} -->
-        {{ wtf.quick_form(form) }}
-    </form>
-
-    {% if not known %}
-        <p>Pleased to meet you!</p>
-    {% else %}
-        <p>Happy to see you again!</p>
-    {% endif %}
-
-    Hello,
-    {% if current_user.is_authenticated %}
-        {{ current_user.username }}
-    {% else %}
-        Stranger
-    {% endif %}!
+    <h1>Hellooo 😀😀😃</h1>
 
 {% endblock %}

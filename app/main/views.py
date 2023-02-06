@@ -9,11 +9,6 @@ from app.email import send_email
 
 @main.route('/')
 def index():
-    return render_template("index.html", current_time=datetime.utcnow())
-
-
-@main.route('/user', methods=["POST", "GET"])
-def user():
     form = NameForm()
     # validates the form using wtforms validators
     if form.validate_on_submit():
@@ -33,5 +28,10 @@ def user():
             session["known"] = True
         session["name"] = form.name.data
         form.name.data = ''
-        return redirect(url_for(".user"))
-    return render_template("user.html", form=form, name=session.get("name"), known=session.get("known", False))
+        return redirect(url_for(".index"))
+    return render_template("index.html", current_time=datetime.utcnow(), form=form, name=session.get("name"), known=session.get("known", False))
+    
+
+@main.route('/user', methods=["POST", "GET"])
+def user():
+    return render_template("user.html")
