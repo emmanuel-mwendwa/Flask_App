@@ -7,7 +7,4 @@ set MAIL_USERNAME=unit.test.26@gmail.com
 set MAIL_PASSWORD=zrccjewjsmcdxipx
 set FLASKY_ADMIN=unit.test.26@gmail.com
 
-flask db migrate "another version"
-flask db upgrade
-
 flask run

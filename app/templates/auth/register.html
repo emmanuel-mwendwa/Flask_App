@@ -1,16 +1,28 @@
-{% extends "base.html" %}
+{% extends "base_template.html" %}
 
 {% block title %} Register {% endblock %}
 
+{% block navbar %} {{ super() }} {% endblock %}
+
 {% block content %}
 
-    <form action="" method="POST">
-        {{ form.hidden_tag() }}
+<h1>Register</h1>
+<p>
+    Already have an account?
+    <a href="{{ url_for('auth.login') }}">
+      Click here to Log In
+    </a>
+  </p>
+  <hr />
+
+    <form action="" method="POST" novalidate>
+        <!-- {{ form.hidden_tag() }}
         {{ form.email.label }} <br> {{ form.email() }} <br>
         {{ form.username.label }} <br> {{ form.username() }} <br>
         {{ form.password.label }} <br> {{ form.password() }} <br>
         {{ form.password2.label }} <br> {{ form.password2() }} <br>
-        {{ form.submit() }}
+        {{ form.submit() }} -->
+        {{ wtf.quick_form(form) }}
     </form>
 
 {% endblock %}

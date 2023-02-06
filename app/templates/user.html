@@ -1,26 +1,29 @@
-{% extends "base.html" %}
+{% extends "base_template.html" %}
 
 {% block title %} User Page {% endblock %}
 
+{% block navbar %} {{ super() }} {% endblock %}
+
 {% block content %}
 
-    <!-- {% if name %}
+    {% if name %}
         <p>Hello, {{ name }}!</p>
     {% else %}
         <p>Hello, Stranger!</p>
     {% endif %}
 
     <form action="" method="POST">
-        {{ form.hidden_tag() }}
+        <!-- {{ form.hidden_tag() }}
         {{ form.name.label }} {{ form.name() }}
-        {{ form.submit() }}
+        {{ form.submit() }} -->
+        {{ wtf.quick_form(form) }}
     </form>
 
     {% if not known %}
         <p>Pleased to meet you!</p>
     {% else %}
         <p>Happy to see you again!</p>
-    {% endif %}  -->
+    {% endif %}
 
     Hello,
     {% if current_user.is_authenticated %}

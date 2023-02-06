@@ -1,6 +1,8 @@
-{% extends "base.html" %} 
+{% extends "base_template.html" %} 
 
 {% block title %} Login {% endblock %} 
+
+{% block navbar %} {{ super() }} {% endblock %}
 
 {% block content %}
 
@@ -13,11 +15,12 @@
 </p>
 <hr />
 <form action="" method="POST">
-  {{ form.hidden_tag() }} 
+  <!-- {{ form.hidden_tag() }} 
   {{ form.email.label }} <br> {{ form.email() }} <br />
   {{ form.password.label }} <br> {{ form.password() }} <br />
   {{ form.remember_me() }} {{ form.remember_me.label }} <br />
-  {{ form.submit() }}
+  {{ form.submit() }} -->
+  {{ wtf.quick_form(form) }}
 </form>
 
 {% endblock %}
