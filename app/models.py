@@ -1,7 +1,8 @@
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from itsdangerous import URLSafeTimedSerializer as Serializer
+import datetime
+import jwt
 
 from . import db, login_manager
 
@@ -42,13 +43,23 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'confirm': self.id}).decode('utf-8')
+        reset_token = jwt.encode({
+            "confirm": self.id,
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=expiration)
+        },
+        current_app.config['SECRET_KEY'],
+        algorithm="HS256"
+        )
+        return reset_token
 
     def confirm(self, token):
-        s = Serializer(current_app.confi['SECRET_KEY'])
         try:
-            data = s.loads(token.encode('utf-8'))
+            data = jwt.decode(
+                token,
+                current_app.config['SECRET_KEY'],
+                leeway = datetime.timedelta(seconds=10),
+                algorithms = ["HS256"]
+            )
         except:
             return False
         if data.get('confirm') != self.id:

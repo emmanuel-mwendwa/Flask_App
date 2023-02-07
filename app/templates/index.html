@@ -11,24 +11,24 @@
 <p>The time locally is, {{ moment(current_time).format('LLL') }}</p>
 <p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
 
-{% if name %}
+<!-- {% if name %}
 <p>Hello, {{ name }}!</p>
 {% else %}
 <p>Hello, Stranger!</p>
-{% endif %}
+{% endif %} -->
 
-<form action="" method="POST">
-  <!-- {{ form.hidden_tag() }}
+<!-- <form action="" method="POST">
+    {{ form.hidden_tag() }}
     {{ form.name.label }} {{ form.name() }}
-    {{ form.submit() }} -->
+    {{ form.submit() }}
   {{ wtf.quick_form(form) }}
-</form>
+</form> -->
 
-{% if not known %}
+<!-- {% if not known %}
 <p>Pleased to meet you!</p>
 {% else %}
 <p>Happy to see you again!</p>
-{% endif %} 
+{% endif %}  -->
 
 <p>Hello, 
 {% if current_user.is_authenticated %} 

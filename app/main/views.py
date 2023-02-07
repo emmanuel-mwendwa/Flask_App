@@ -23,7 +23,6 @@ def index():
             # send email to app admin once any new names are added to the database
             if current_app.config['FLASKY_ADMIN']:
                 send_email(current_app.config['FLASKY_ADMIN'], 'New User', 'mail/new_user', user=user)
-                print("Email sent")
         else:
             session["known"] = True
         session["name"] = form.name.data
