@@ -5,5 +5,7 @@ data-dev.sqlite
 *.sqlite
 *.sqlite3
 # ignore .bat file
+exit.bat
+start.bat
 *.bat/
 *.bak

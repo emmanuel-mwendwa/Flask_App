@@ -7,6 +7,8 @@ import jwt
 from . import db, login_manager
 
 # database models in python code that will help in creating database tables with the defined columns and their attributes
+
+
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
@@ -57,8 +59,8 @@ class User(UserMixin, db.Model):
             data = jwt.decode(
                 token,
                 current_app.config['SECRET_KEY'],
-                leeway = datetime.timedelta(seconds=10),
-                algorithms = ["HS256"]
+                leeway=datetime.timedelta(seconds=10),
+                algorithms=["HS256"]
             )
         except:
             return False
@@ -66,6 +68,34 @@ class User(UserMixin, db.Model):
             return False
         self.confirmed = True
         db.session.add(self)
+        return True
+
+    def generate_reset_token(self, expiration=3600):
+        reset_token = jwt.encode({
+            "reset": self.id,
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=expiration)
+        },
+        current_app.config['SECRET_KEY'],
+        algorithm="HS256"
+        )
+        return reset_token
+
+    @staticmethod
+    def reset_password(token, new_password):
+        try:
+            data = jwt.decode(
+                token,
+                current_app.config['SECRET_KEY'],
+                leeway=datetime.timedelta(seconds=10),
+                algorithms=["HS256"]
+            )
+        except:
+            return False
+        user = User.query.get(data.get('reset'))
+        if user is None:
+            return False
+        user.password = new_password
+        db.session.add(user)
         return True
 
     def __repr__(self):
