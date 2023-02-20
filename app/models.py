@@ -9,15 +9,47 @@ from . import db, login_manager
 # database models in python code that will help in creating database tables with the defined columns and their attributes
 
 
+# List of permissions in the application with constant values attached
+class Permission:
+    FOLLOW = 1
+    COMMENT = 2
+    WRITE = 4
+    MODERATE = 8
+    ADMIN = 16
+
+
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(63), unique=True)
+    #fields to assign roles and permissions to users
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
     # a relationship btw User and Role
     users = db.relationship('User', backref='role', lazy='dynamic')
 
+    def __init__(self, **kwargs):
+        super(Role, self).__init__(**kwargs)
+        if self.permissions is None:
+            self.permissions = 0
+
     def __repr__(self):
         return '<Role %r>' % self.name
+
+    # methods to manage the permissions added
+    def add_permission(self, perm):
+        if not self.has_permission(perm):
+            self.permissions += perm
+
+    def remove_permission(self, perm):
+        if self.has_permission(perm):
+            self.permissions -= perm
+
+    def reset_permissions(self):
+        self.permissions = 0
+
+    def has_permission(self, perm):
+        return self.permissions & perm == perm
 
 
 class User(UserMixin, db.Model):
