@@ -1,6 +1,6 @@
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 import datetime
 import jwt
 
@@ -83,6 +83,20 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     # account confirmation
     confirmed = db.Column(db.Boolean, default=False)
+
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role is None:
+            if self.email == current_app.config['FLASKY_ADMIN']:
+                self.role = Role.query.filter_by(name='Administrator').first()
+            if self.role is None:
+                self.role = Role.query.filter_by(default=True).first()
+
+    def can(self, perm):
+        return self.role is not None and self.role.has_permission(perm)
+    
+    def is_administrator(self):
+        return self.can(Permission.ADMIN)
 
     @property
     def password(self):
@@ -185,6 +199,15 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
+
+class AnonymousUser(AnonymousUserMixin):
+    def can(self, permissions):
+        return False
+    
+    def is_administrator(self):
+        return False
+    
+login_manager.anonymous_user = AnonymousUser
 
 # function to load a user from the database
 @login_manager.user_loader

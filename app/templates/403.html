@@ -1,0 +1,13 @@
+{% extends "base_template.html" %}
+
+{% block title %} Forbidden {% endblock %}
+
+{% block navbar %} {{ super() }} {% endblock %}
+
+{% block content %}
+
+{{ super() }}
+
+    <p>You are not allowed to view the contents of this page!!</p>
+
+{% endblock %}
