@@ -52,12 +52,15 @@ class Role(db.Model):
         return self.permissions & perm == perm
 
     @staticmethod
+    # setting default role
     def insert_roles():
+        # listing the roles in the application
         roles = {
             'User': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE],
             'Moderator': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE, Permission.MODERATE],
             'Administrator': [Permission.FOLLOW, Permission.COMMENT, Permission.WRITE, Permission.MODERATE, Permission.ADMIN]
         }
+        # declaring the default role
         default_role = 'User'
         for r in roles:
             role = Role.query.filter_by(name=r).first()
@@ -84,6 +87,7 @@ class User(UserMixin, db.Model):
     # account confirmation
     confirmed = db.Column(db.Boolean, default=False)
 
+    # setting the default role for users and an administrator
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
         if self.role is None:

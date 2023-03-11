@@ -9,3 +9,4 @@ exit.bat
 start.bat
 *.bat/
 *.bak
+.env
