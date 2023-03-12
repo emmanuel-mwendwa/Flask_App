@@ -1,7 +1,7 @@
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, AnonymousUserMixin
-from datetime import datetime
+import datetime
 import jwt
 
 from . import db, login_manager
@@ -91,12 +91,12 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
-    member_since = db.Column(db.DateTime(), default=datetime.utcnow)
-    last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    member_since = db.Column(db.DateTime(), default=datetime.datetime.utcnow)
+    last_seen = db.Column(db.DateTime(), default=datetime.datetime.utcnow)
 
     # function to locate users last seen time
     def ping(self):
-        self.last_seen = datetime.utcnow()
+        self.last_seen = datetime.datetime.utcnow()
         db.session.add(self)
         db.session.commit()
 

@@ -31,6 +31,7 @@ def index():
     return render_template("index.html", current_time=datetime.utcnow(), form=form, name=session.get("name"), known=session.get("known", False))
     
 
-@main.route('/user', methods=["POST", "GET"])
-def user():
-    return render_template("user.html")
+@main.route('/user/<username>', methods=["POST", "GET"])
+def user(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    return render_template("user.html", user=user)
