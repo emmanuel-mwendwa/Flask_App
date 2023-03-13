@@ -1,0 +1,13 @@
+{% extends "base_template.html" %} 
+
+{% block title %} Edit Profile {% endblock %} 
+
+{% block navbar %} {{ super() }} {% endblock %} 
+
+{% block page_content %}
+
+<form action="" method="POST">
+    {{ wtf.quick_form(form) }}
+</form>
+
+{% endblock %}
