@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, BooleanField, SelectField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Regexp
 from wtforms import ValidationError
-from ..models import Role
+from ..models import Role, User
 
 # a FlaskForm model/class that helps create a HTML template form
 class NameForm(FlaskForm):
