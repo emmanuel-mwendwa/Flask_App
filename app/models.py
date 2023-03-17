@@ -96,6 +96,8 @@ class User(UserMixin, db.Model):
     last_seen = db.Column(db.DateTime(), default=datetime.datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
 
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+
     # function to locate users last seen time
     def ping(self):
         self.last_seen = datetime.datetime.utcnow()
@@ -232,6 +234,15 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+    
+
+class Post(db.Model):
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime(), index=True, default=datetime.datetime.utcnow())
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
 class AnonymousUser(AnonymousUserMixin):
