@@ -3,6 +3,7 @@ from wtforms import StringField, TextAreaField, BooleanField, SelectField, Submi
 from wtforms.validators import DataRequired, Length, Email, Regexp
 from wtforms import ValidationError
 from ..models import Role, User
+from flask_pagedown.fields import PageDownField
 
 # a FlaskForm model/class that helps create a HTML template form
 class NameForm(FlaskForm):
@@ -47,5 +48,6 @@ class EditProfileAdminForm(FlaskForm):
         
 
 class PostForm(FlaskForm):
-    body = TextAreaField("What's on your mind?", validators=[DataRequired()])
+    # pagedown field to help with formatting long posts
+    body = PageDownField("What's on your mind?", validators=[DataRequired()])
     submit = SubmitField('Submit')

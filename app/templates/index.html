@@ -3,6 +3,11 @@
 
 {% block title %} Home Page {% endblock %} 
 
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
+
 {% block navbar %} {{ super() }} {% endblock %} 
 
 {% block page_content %}

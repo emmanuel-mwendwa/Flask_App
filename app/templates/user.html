@@ -2,6 +2,10 @@
 
 {% block title %}{{ user.username }}{% endblock %}
 
+{% block scripts %} {{ super() }} {% endblock %}
+
+{% block navbar %} {{ super() }} {% endblock %}
+
 {% block page_content %}
 <div class="page-header">
     <img class="img-rounded profile-thumbnail" src="{{ user.gravatar(size=256) }}">

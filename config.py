@@ -8,7 +8,7 @@ class Config:
     # key for preventing csrf attacks
     SECRET_KEY = os.environ.get('SECRET_KEY')
     # pagination config for posts per page
-    FLASKY_POSTS_PER_PAGE = os.environ.get('FLASKY_POSTS_PER_PAGE')
+    FLASKY_POSTS_PER_PAGE = int(os.environ.get('FLASKY_POSTS_PER_PAGE'))
     # configs for sending emails
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
     MAIL_PORT = 587
