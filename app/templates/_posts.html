@@ -6,20 +6,21 @@
                 <img src="{{ post.author.gravatar(size=40)}}" alt="" class="img-rounded profile-thumbnail">
             </a>
         </div>
-        <div class="post-date">
-            {{ moment(post.timestamp).fromNow() }}
-        </div>
-        <div>
-            <a href="{{ url_for('main.user', username=post.author.username) }}">
-                {{ post.author.username }}
+        <div class="post-content">
+            <div class="post-date"> {{ moment(post.timestamp).fromNow() }}</div>
+            <div> <a href="{{ url_for('main.user', username=post.author.username) }}"> {{ post.author.username }} </a> </div>
+            <div class="post-body">
+                {% if post.body_html %}
+                    {{ post.body_html | safe }}
+                {% else %}
+                    {{ post.body }}
+                {% endif %}
+            </div>
+            <div class="post-footer">
+            <a href="{{ url_for('main.post', id=post.id) }}">
+                <span class="label label-default">Permalink</span>
             </a>
         </div>
-        <div class="post-body">
-            {% if post.body_html %}
-                {{ post.body_html | safe }}
-            {% else %}
-                {{ post.body }}
-            {% endif %}
         </div>
     </li>
     {% endfor %}
