@@ -1,0 +1,20 @@
+{% extends "base.html" %} 
+
+{% block title %} Edit Post {% endblock %} 
+
+{% block navbar %} {{ super() }} {% endblock %} 
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Edit Post</h1>
+</div>
+<div>
+    {{ wtf.quick_form(form) }}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
