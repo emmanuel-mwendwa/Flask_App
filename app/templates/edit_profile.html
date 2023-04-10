@@ -5,9 +5,12 @@
 {% block navbar %} {{ super() }} {% endblock %} 
 
 {% block page_content %}
+<div class="page-header">
+    <h1>Edit Your Profile</h1>
+</div>
 
-<form action="" method="POST">
+<div class="col-md-4">
     {{ wtf.quick_form(form) }}
-</form>
+</div>
 
 {% endblock %}

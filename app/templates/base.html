@@ -9,10 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flasky - {% block title %} {% endblock %}</title>
 
-    {% block scripts %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    {% endblock %}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css">
+
   </head>
   <body>
 
@@ -42,11 +45,11 @@
                         <img src="{{ current_user.gravatar(size=18) }}" alt="">
                         Account <b class="caret"></b>
                     </a>
-                    <!-- <ul class="dropdown-menu"> -->
+                    <ul class="dropdown-menu">
                         <li><a href="{{ url_for('auth.change_password') }}">Change Password</a></li>
                         <li><a href="{{ url_for('auth.change_email_request') }}">Change Email</a></li>
                         <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                    <!-- </ul> -->
+                    </ul>
                 </li>
                 {% else %}
                 <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
@@ -68,9 +71,12 @@
       {% endfor %}
 
       {% block page_content %} {% endblock %}
+    </div>
+{% endblock %}
 
-      {{ moment.include_moment() }}
-    
+{% block scripts %}
+{{ super() }}
+{{ moment.include_moment() }}
 {% endblock %}
 
   </body>
