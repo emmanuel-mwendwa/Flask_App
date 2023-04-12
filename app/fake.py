@@ -17,6 +17,7 @@ def users(count=100):
                  about_me=fake.text(),
                  member_since=fake.past_date())
         db.session.add(u)
+        i += 1
     with db.session.no_autoflush:
         try:
             db.session.commit()
