@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from . import main
 from .forms import NameForm, EditProfileForm, EditProfileAdminForm, PostForm
 from .. import db
-from ..decorators import admin_required
+from ..decorators import admin_required, permission_required
 from ..models import User, Role, Permission, Post
 from app.email import send_email
 
@@ -97,3 +97,35 @@ def edit(id):
         return redirect(url_for('main.post', id=post.id))
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
+
+@main.route('/follow/<username>')
+@login_required
+@permission_required(Permission.FOLLOW)
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('Invalid user.')
+        return redirect(url_for('main.index'))
+    if current_user.is_following(user):
+        flash('You are already following this user.')
+        return redirect(url_for('main.user', username=username))
+    current_user.follow(user)
+    db.session.commit()
+    flash(f'You are now following {username}')
+    return redirect(url_for('main.user', username=username))
+
+@main.route('/follow/<username>')
+@login_required
+@permission_required(Permission.FOLLOW)
+def unfollow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('Invalid user.')
+        return redirect(url_for('main.index'))
+    if not current_user.is_following(user):
+        flash('You are not following this user.')
+        return redirect(url_for('main.user', username=username))
+    current_user.unfollow(user)
+    db.session.commit()
+    flash(f'You are not following {username}')
+    return redirect(url_for('main.user', username=username))
