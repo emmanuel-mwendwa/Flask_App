@@ -110,11 +110,13 @@ class User(UserMixin, db.Model):
     followed = db.relationship('Follow',
                                foreign_keys=[Follow.follower_id],
                                backref=db.backref('follower', lazy='joined'),
+                               lazy='dynamic',
                                cascade='all, delete-orphan')
     # followers relationship
     followers = db.relationship('Follow',
                                foreign_keys=[Follow.followed_id],
                                backref=db.backref('followed', lazy='joined'),
+                               lazy='dynamic',
                                cascade='all, delete-orphan')
 
     posts = db.relationship('Post', backref='author', lazy='dynamic')
