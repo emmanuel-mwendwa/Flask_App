@@ -114,7 +114,7 @@ def follow(username):
     flash(f'You are now following {username}')
     return redirect(url_for('main.user', username=username))
 
-@main.route('/follow/<username>')
+@main.route('/unfollow/<username>')
 @login_required
 @permission_required(Permission.FOLLOW)
 def unfollow(username):
