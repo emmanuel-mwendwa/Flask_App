@@ -1,7 +1,7 @@
 import os
 import click
 from app import create_app, db
-from app.models import User, Role, Post
+from app.models import User, Role, Post, Follow, Permission
 from flask_migrate import Migrate
 
 
@@ -13,7 +13,7 @@ migrate = Migrate(app, db)
 # the flask shell command will import these items automatically into the shell
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Role=Role, Post=Post)
+    return dict(db=db, User=User, Role=Role, Post=Post, Follow=Follow, Permission=Permission)
 
 
 # command to run unit tests
