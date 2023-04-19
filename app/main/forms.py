@@ -51,3 +51,8 @@ class PostForm(FlaskForm):
     # pagedown field to help with formatting long posts
     body = PageDownField("What's on your mind?", validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+
+class CommentForm(FlaskForm):
+    body = StringField('', validators=[DataRequired()])
+    submit = SubmitField('Submit')
