@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block title %} Comment Moderation {% endblock %}
+{% block navbar %} {{ super() }} {% endblock %}
+
+{% block page_content %}
+
+<div class="page-header">
+    <h1>Comment Moderation</h1>
+</div>
+{% det moderate = True %}
+{% include '_comments.html' %}
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, 'main.moderate') }}
+</div>
+{% endif %}
+
+{% endblock %}
