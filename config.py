@@ -10,6 +10,7 @@ class Config:
     # pagination config for posts per page
     FLASKY_POSTS_PER_PAGE = int(os.environ.get('FLASKY_POSTS_PER_PAGE'))
     FLASKY_FOLLOWERS_PER_PAGE = int(os.environ.get('FLASKY_FOLLOWERS_PER_PAGE'))
+    FLASKY_COMMENTS_PER_PAGE = int(os.environ.get('FLASKY_COMMENTS_PER_PAGE'))
     # configs for sending emails
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
     MAIL_PORT = 587
