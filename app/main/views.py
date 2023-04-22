@@ -85,7 +85,7 @@ def edit_profile_admin(id):
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
 
-@main.route('/post/<int:id>')
+@main.route('/post/<int:id>', methods=["GET", "POST"])
 def post(id):
     post = Post.query.get_or_404(id)
     form = CommentForm()
@@ -201,7 +201,7 @@ def show_followed():
 @permission_required(Permission.MODERATE)
 def moderate():
     page = request.args.get('page', 1, type=int)
-    pagination = Comment.query.order_vy(Comment.timestamp.desc()).paginate(page=page, per_page=current_app.config['FLASKY_COMMENTS_PER_PAGE'], error_out=False)
+    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(page=page, per_page=current_app.config['FLASKY_COMMENTS_PER_PAGE'], error_out=False)
     comments = pagination.items
     return render_template('moderate.html', comments=comments, pagination=pagination, page=page)
 
@@ -211,6 +211,8 @@ def moderate():
 def moderate_enable(id):
     comment = Comment.query.get_or_404(id)
     comment.disabled = False
+    db.session.add(comment)
+    db.session.commit()
     return redirect(url_for('main.moderate', page=request.args.get('page', 1, type=int)))
 
 @main.route('/moderate/disable/<int:id>')
@@ -219,4 +221,6 @@ def moderate_enable(id):
 def moderate_disable(id):
     comment = Comment.query.get_or_404(id)
     comment.disabled = True
+    db.session.add(comment)
+    db.session.commit()
     return redirect(url_for('main.moderate', page=request.args.get('page', 1, type=int)))
