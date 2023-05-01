@@ -159,14 +159,14 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def generate_confirmation_token(self, expiration=3600):
-        reset_token = jwt.encode({
+        confirmation_token = jwt.encode({
             "confirm": self.id,
             "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=expiration)
         },
         current_app.config['SECRET_KEY'],
         algorithm="HS256"
         )
-        return reset_token
+        return confirmation_token
 
     def confirm(self, token):
         try:
@@ -214,7 +214,7 @@ class User(UserMixin, db.Model):
 
 
     def generate_email_change_token(self, new_email, expiration=3600):
-        reset_token = jwt.encode({
+        email_change_token = jwt.encode({
             "change_email": self.id,
             "new_email": new_email,
             "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=expiration)
@@ -222,7 +222,7 @@ class User(UserMixin, db.Model):
         current_app.config['SECRET_KEY'],
         algorithm="HS256"
         )
-        return reset_token
+        return email_change_token
 
     def change_email(self, token):
         try:
@@ -292,6 +292,29 @@ class User(UserMixin, db.Model):
     def followed_posts(self):
         return Post.query.join(Follow, Follow.followed_id == Post.author_id).\
                 filter(Follow.follower_id == self.id)
+    
+    def generate_auth_token(self, expiration=300):
+        auth_token = jwt.encode({
+            "id": self.id,
+            "exp": datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(seconds=expiration)
+        },
+        current_app.config["SECRET_KEY"],
+        algorithm="HS256"
+        )
+        return auth_token
+    
+    @staticmethod
+    def verify_auth_token(token):
+        try:
+            data = jwt.decode(
+                token,
+                current_app.config["SECRET_KEY"],
+                leeway=datetime.timedelta(seconds=10),
+                algorithms=["HS256"]
+            )
+        except:
+            return False
+        return User.query.get(data["id"])
     
 
 class AnonymousUser(AnonymousUserMixin):
